@@ -1,12 +1,11 @@
-FROM alpine
+FROM ruby:2.3.0-alpine
 
-RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing/ --allow-untrusted haproxy ruby
+RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community/ --allow-untrusted haproxy
 
-RUN apk --update add --virtual build-dependencies ruby-bundler ruby-dev ruby-nokogiri \
-  && gem install --no-ri --no-rdoc socksify \
+RUN apk --update add --virtual build-dependencies build-base libxml2-dev libxslt-dev \
+  && gem install --no-ri --no-rdoc nokogiri socksify \
   && apk del build-dependencies \
   && rm -rf /var/cache/apk/*
-
 
 ADD haproxy.cfg.erb /usr/local/etc/haproxy.cfg.erb
 
