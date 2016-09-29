@@ -192,8 +192,8 @@ end
 haproxy = Service::Haproxy.new
 proxies = []
 
-tor_instances = ENV['tors'] || 20
-tor_instances.to_i.times.each do |id|
+tor_instances = ENV['tors'].try(:to_i) || 20
+tor_instances.times.each do |id|
   proxy = Service::Proxy.new(id)
   haproxy.add_backend(proxy)
   proxy.start
